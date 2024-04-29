@@ -1,0 +1,70 @@
+<div class="flex flex-column gap-2">
+  <label
+    [class]="
+      field.size == 'large' ? 'text-xl' : field.size == 'small' ? 'text-sm' : ''
+    "
+    *ngIf="field.label"
+    htmlFor="{{ field.label | lowercase }}"
+    >{{ field.label }}</label
+  >
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="field.icon ? true : false"
+      [ngTemplateOutlet]="withIconWrap">
+    </ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="withoutIconWrap">
+    </ng-container>
+  </ng-container>
+  <small *ngIf="field.infoText">{{ field.infoText }}</small>
+  <small
+    *ngIf="errorMessage && control?.touched && control?.invalid"
+    class="text-red-500"
+    >{{ errorMessage }}</small
+  >
+</div>
+
+<ng-template #withIconWrap>
+  <span class="p-input-icon-{{ field.iconPosition }}">
+    <i [class]="field.icon"></i>
+    <ng-container [ngSwitch]="true">
+      <ng-container
+        *ngSwitchCase="control ? true : false"
+        [ngTemplateOutlet]="formControlWrap">
+      </ng-container>
+      <ng-container *ngSwitchDefault [ngTemplateOutlet]="regularControlWrap">
+      </ng-container>
+    </ng-container>
+  </span>
+</ng-template>
+<ng-template #withoutIconWrap>
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="control ? true : false"
+      [ngTemplateOutlet]="formControlWrap">
+    </ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="regularControlWrap">
+    </ng-container>
+  </ng-container>
+</ng-template>
+<ng-template #formControlWrap>
+  <form [formGroup]="form">
+    <input
+      pInputText
+      [type]="field.type"
+      [pKeyFilter]="field.filterType"
+      [attr.disabled]="field.disabled || false"
+      [placeholder]="field.placeholder"
+      [ngClass]="class"
+      [formControl]="control" />
+  </form>
+</ng-template>
+<ng-template #regularControlWrap>
+  <input
+    pInputText
+    [type]="field.type"
+    [pKeyFilter]="field.filterType"
+    [disabled]="field.disabled"
+    [placeholder]="field.placeholder"
+    [ngClass]="class"
+    (input)="valueChange.emit($event)" />
+</ng-template>

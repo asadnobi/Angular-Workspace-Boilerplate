@@ -1,0 +1,62 @@
+<div class="flex flex-column gap-2">
+  <label *ngIf="field.label" htmlFor="{{ field.label | lowercase }}">{{
+    field.label
+  }}</label>
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="control ? true : false"
+      [ngTemplateOutlet]="formControlWrap">
+    </ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="regularControlWrap">
+    </ng-container>
+  </ng-container>
+  <small *ngIf="field.infoText">{{ field.infoText }}</small>
+  <small
+    *ngIf="errorMessage && control?.touched && control?.invalid"
+    class="text-red-500"
+    >{{ errorMessage }}</small
+  >
+</div>
+
+<ng-template #formControlWrap>
+  <p-dropdown
+    [options]="field.options"
+    optionLabel="label"
+    optionValue="value"
+    [filter]="field.filterEnable"
+    [filterBy]="field.label"
+    [showClear]="field.filterEnable ? true : false"
+    [placeholder]="field.placeholder"
+    [ngClass]="class"
+    [formControl]="control">
+  </p-dropdown>
+</ng-template>
+<ng-template #regularControlWrap>
+  <p-dropdown
+    [options]="field.options"
+    optionLabel="label"
+    optionValue="value"
+    [filter]="field.filterEnable"
+    [filterBy]="field.label"
+    [showClear]="field.filterEnable ? true : false"
+    [placeholder]="field.placeholder"
+    [ngClass]="class">
+  </p-dropdown>
+</ng-template>
+
+<ng-template pTemplate="selectedItem">
+  <div class="flex align-items-center gap-2" *ngIf="selectedItem">
+    <ng-container *ngIf="selectedItem?.img">
+      <img [src]="selectedItem.img" style="width: 18px" />
+    </ng-container>
+    <div>{{ selectedItem.label }}</div>
+  </div>
+</ng-template>
+<ng-template let-item pTemplate="item">
+  <div class="flex align-items-center gap-2">
+    <ng-container *ngIf="item?.img">
+      <img [src]="item.img" style="width: 18px" />
+    </ng-container>
+    <div>{{ item.label }}</div>
+  </div>
+</ng-template>

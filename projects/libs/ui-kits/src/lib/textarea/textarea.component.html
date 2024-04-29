@@ -1,0 +1,42 @@
+<div class="flex flex-column gap-2">
+  <label *ngIf="field.label" htmlFor="{{ field.label | lowercase }}">{{
+    field.label
+  }}</label>
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="control ? true : false"
+      [ngTemplateOutlet]="formControlWrap">
+    </ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="regularControlWrap">
+    </ng-container>
+  </ng-container>
+  <small *ngIf="field.infoText">{{ field.infoText }}</small>
+  <small
+    *ngIf="errorMessage && control?.touched && control?.invalid"
+    class="text-red-500"
+    >{{ errorMessage }}</small
+  >
+</div>
+
+<ng-template #formControlWrap>
+  <textarea
+    pInputTextarea
+    [rows]="5"
+    [pKeyFilter]="field.filterType"
+    [attr.disabled]="field.disabled"
+    [placeholder]="field.placeholder"
+    [ngClass]="class"
+    [formControl]="control">
+  </textarea>
+</ng-template>
+<ng-template #regularControlWrap>
+  <textarea
+    pInputTextarea
+    [rows]="5"
+    [pKeyFilter]="field.filterType"
+    [disabled]="field.disabled"
+    [placeholder]="field.placeholder"
+    [ngClass]="class"
+    (input)="valueChange.emit($event)">
+  </textarea>
+</ng-template>

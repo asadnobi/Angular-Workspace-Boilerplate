@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  project-mobile:
+    image: YOUR_DOCKER_USERNAME/project-mobile:latest
+    container_name: project-mobile-container
+    build:
+      context: ../../
+      dockerfile: projects/apps/mobile/Dockerfile
+    ports:
+      - '${PORT}:80'
+    environment:
+      - PORT=${PORT}
+    env_file:
+      - .env
+    entrypoint: /usr/local/bin/entrypoint.sh

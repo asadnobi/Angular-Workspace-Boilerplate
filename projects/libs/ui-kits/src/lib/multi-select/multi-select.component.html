@@ -1,0 +1,47 @@
+<div class="flex flex-column gap-2">
+  <label *ngIf="field.label" htmlFor="{{ field.label | lowercase }}">{{
+    field.label
+  }}</label>
+  <ng-container [ngSwitch]="true">
+    <ng-container
+      *ngSwitchCase="control ? true : false"
+      [ngTemplateOutlet]="formControlWrap">
+    </ng-container>
+    <ng-container *ngSwitchDefault [ngTemplateOutlet]="regularControlWrap">
+    </ng-container>
+  </ng-container>
+  <small *ngIf="field.infoText">{{ field.infoText }}</small>
+  <small
+    *ngIf="errorMessage && control?.touched && control?.invalid"
+    class="text-red-500"
+    >{{ errorMessage }}</small
+  >
+</div>
+
+<ng-template #formControlWrap>
+  <p-multiSelect
+    [options]="field.options"
+    optionLabel="label"
+    optionValue="value"
+    [filter]="field.filterEnable || false"
+    [filterBy]="field.label"
+    [showClear]="field.filterEnable ? true : false"
+    [placeholder]="field.placeholder"
+    [display]="display"
+    [ngClass]="class"
+    [formControl]="control">
+  </p-multiSelect>
+</ng-template>
+<ng-template #regularControlWrap>
+  <p-multiSelect
+    [options]="field.options"
+    optionLabel="label"
+    optionValue="value"
+    [filter]="field.filterEnable || false"
+    [filterBy]="field.label"
+    [showClear]="field.filterEnable ? true : false"
+    [placeholder]="field.placeholder"
+    [display]="display"
+    [ngClass]="class">
+  </p-multiSelect>
+</ng-template>
